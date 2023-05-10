@@ -167,7 +167,7 @@ class Reward:
             current_actual_time = (step_count - 1) / 15
 
             # Calculate which indexes were already passed
-            indexes_traveled = indexes_cyclical(
+            indexes_traveled = get_cyclical_indexes(
                 first_index, closest_index, len(times_list)
             )
 
