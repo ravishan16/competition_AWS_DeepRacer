@@ -7,9 +7,6 @@ class Reward:
         self.verbose = verbose
 
     def reward_function(self, params):
-        # Import package (needed for heading)
-        import math
-
         ################## HELPER FUNCTIONS ###################
 
         def dist_2_points(x1, x2, y1, y2):
@@ -142,13 +139,27 @@ class Reward:
 
             return direction_diff
 
-        # Gives back indexes that lie between start and end index of a cyclical list
-        # (start index is included, end index is not)
-        def indexes_cyclical(start, end, array_len):
-            if end < start:
-                end += array_len
+        def get_cyclical_indexes(start_index, end_index, list_length):
+            """
+            Returns a list of indexes that lie between start_index and end_index in a cyclical
+            list of length list_length. The start index is included, but the end index is excluded.
+            """
 
-            return [index % array_len for index in range(start, end)]
+            # Validate inputs
+            if not isinstance(start_index, int) or not isinstance(end_index, int) or not isinstance(list_length, int):
+                raise TypeError("start_index, end_index, and list_length must be integers")
+
+            if start_index < 0 or end_index >= list_length or list_length <= 0:
+                raise ValueError("Invalid start_index, end_index, or list_length")
+
+            # Adjust end_index for cyclical list
+            if end_index < start_index:
+                end_index += list_length
+
+            # Generate list of indexes
+            indexes = [index % list_length for index in range(start_index, end_index)]
+
+            return indexes
 
         # Calculate how long car would take for entire lap, if it continued like it did until now
         def projected_time(first_index, closest_index, step_count, times_list):
